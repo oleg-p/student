@@ -11,7 +11,16 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'gridview' => [
+            'class' => '\kartik\grid\Module',
+            // see settings on http://demos.krajee.com/grid#module
+        ],
+        'datecontrol' => [
+            'class' => '\kartik\datecontrol\Module',
+            // see settings on http://demos.krajee.com/datecontrol#module
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
