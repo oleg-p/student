@@ -21,6 +21,8 @@ class Task extends BaseTask
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'link_lecture', 'file'], 'string', 'max' => 255],
             [['lock'], 'default', 'value' => '0'],
+
+
         ];
     }
 	
