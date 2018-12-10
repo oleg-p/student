@@ -2,12 +2,14 @@
 
 namespace backend\controllers;
 
+use common\dictionaries\Status;
 use Yii;
 use common\models\Task;
 use common\models\searchies\TaskSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\helpers\AppHelper;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -18,9 +20,9 @@ class TaskController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
-                    'delete' => ['post'],
+                    'delete' => ['post', 'take'],
                 ],
             ],
             'access' => [
@@ -28,7 +30,7 @@ class TaskController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'pdf'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'pdf', 'take'],
                         'roles' => ['@']
                     ],
                     [
@@ -55,16 +57,20 @@ class TaskController extends Controller
     }
 
     /**
-     * Displays a single Task model.
+     * Назначение задания исполнителю
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionTake($id)
     {
         $model = $this->findModel($id);
-        return $this->render('view', [
-            'model' => $model,
-        ]);
+        if($model->setExecuter()){
+            Yii::$app->session->setFlash('success', 'Задание "' . $model->name .'" назначено пользователю: ' . AppHelper::getModelUser()->username);
+        } else {
+            Yii::$app->session->setFlash('error', 'Ошибка назначения задания');
+        }
+
+        return $this->redirect('index');
     }
 
     /**
@@ -75,9 +81,11 @@ class TaskController extends Controller
     public function actionCreate()
     {
         $model = new Task();
+        $model->scenario = Task::SCENARIO_CREATE;
 
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Задание "' . $model->name .'"" создано');
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -94,9 +102,11 @@ class TaskController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = Task::SCENARIO_LINK_RESULT;
 
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Результат прикреплён');
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -112,7 +122,13 @@ class TaskController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->deleteWithRelated();
+        $model = $this->findModel($id);
+        if($model->status === Status::STATUS_NEW && AppHelper::isManager()){
+            $model->delete();
+            Yii::$app->session->setFlash('success', 'Задание "' . $model->name .'" удалено');
+        } else {
+            Yii::$app->session->setFlash('error', 'Нельзя удалить задание');
+        }
 
         return $this->redirect(['index']);
     }

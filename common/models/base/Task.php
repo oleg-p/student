@@ -24,9 +24,6 @@ use yii\behaviors\TimestampBehavior;
  */
 class Task extends \yii\db\ActiveRecord
 {
-    use \mootensai\relation\RelationTrait;
-
-
     /**
     * This function helps \mootensai\relation\RelationTrait runs faster
     * @return array relation names of this model

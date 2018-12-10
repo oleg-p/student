@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use kartik\export\ExportMenu;
 use kartik\grid\GridView;
 use common\dictionaries\Status;
+use backend\helpers\AppHelper;
 
 $this->title = Yii::t('app', 'Tasks');
 $this->params['breadcrumbs'][] = $this->title;
@@ -70,10 +71,53 @@ $this->params['breadcrumbs'][] = $this->title;
                 return Status::getValue($model->status);
             }
         ],
+        'created_at:date:Создано',
         [
             'class' => 'yii\grid\ActionColumn',
+            'template' => '{take} {update} {delete}',
+            'contentOptions' => ['class' => 'notFormEdit'],
+            'buttons' => [
+                'take' => function ($url, $model) {
+                    if($model->status === Status::STATUS_NEW && AppHelper::isExecutor() && $model->getCountTaskInProgress() < \common\models\Task::LIMIT_TASKS_IN_PROGRESS){
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-play"></span>',
+                            $url,
+                            ['title' => 'Взять задание на выполнение', 'data' => [
+                                'pjax'=> '0',
+                                'confirm' => 'Взять задание на выполнение?',
+                                'method' => 'post',
+                            ]]
+                        );
+                    }
+                    return '';
+                },
+                'delete' => function ($url, $model) {
+                    if($model->status === Status::STATUS_NEW && AppHelper::isManager()){
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-trash"></span>',
+                            $url,
+                            ['title' => 'Удалить', 'data' => [
+                                'pjax'=> '0',
+                                'confirm' => 'Вы уверены, что хотите удалить это задание?',
+                                'method' => 'post',
+                            ]]
+                        );
+                    }
+                    return '';
+                },
+                'update' => function ($url, $model) {
+                    if($model->status === Status::STATUS_IN_PROGRESS && AppHelper::isExecutor() && $model->executor_id == Yii::$app->user->id){
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-save"></span>',
+                            $url,
+                            ['title' => 'Прикрепить результат', 'data' => ['pjax' => '0']]
+                        );
+                    }
+                    return '';
+                },
+            ],
         ],
-    ]; 
+    ];
     ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
