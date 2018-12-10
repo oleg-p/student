@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use Yii;
 use \common\models\base\Task as BaseTask;
 
 /**
@@ -31,14 +30,14 @@ class Task extends BaseTask
     public function attributeHints()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'manager_id' => Yii::t('app', 'Менеджер'),
-            'executor_id' => Yii::t('app', 'Исполнитель'),
-            'name' => Yii::t('app', 'Наименование'),
-            'comment' => Yii::t('app', 'Комментарий'),
-            'link_lecture' => Yii::t('app', 'Ссылка на лекцию'),
-            'file' => Yii::t('app', 'Файл'),
-            'status' => Yii::t('app', 'Состояние'),
+//            'id' => Yii::t('app', 'ID'),
+//            'manager_id' => Yii::t('app', 'Менеджер'),
+//            'executor_id' => Yii::t('app', 'Исполнитель'),
+//            'name' => Yii::t('app', 'Наименование'),
+//            'comment' => Yii::t('app', 'Комментарий'),
+//            'link_lecture' => Yii::t('app', 'Ссылка на лекцию'),
+//            'file' => Yii::t('app', 'Файл'),
+//            'status' => Yii::t('app', 'Состояние'),
         ];
     }
 }
