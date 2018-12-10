@@ -1,0 +1,10 @@
+Options +FollowSymLinks
+IndexIgnore */*
+RewriteEngine on
+
+#RewriteRule (.+)/$ /$1 [L,R=301] #Удаляем последний слеш
+# if file or directory dosn't exists go to /web/index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule . /index.php
