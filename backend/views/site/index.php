@@ -18,13 +18,13 @@ $this->title = 'Работа с конспектами';
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-xs-6">
                 <p>
                     <?= Html::a('Задания &raquo;', ['/task/index'], ['class' => 'btn btn-default']) ?>
                 </p>
             </div>
             <?php if(AppHelper::isAdmin()){ ?>
-                <div class="col-lg-6">
+                <div class="col-xs-6">
                     <p>
                         <?= Html::a('Пользователи &raquo;', ['/user/index'], ['class' => 'btn btn-default']) ?>
                     </p>
