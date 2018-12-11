@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\assets\FileUploadAsset;
 use Yii;
 use common\dictionaries\Status;
 use \common\models\base\Task as BaseTask;
@@ -117,5 +118,13 @@ class Task extends BaseTask
             ->andWhere(['executor_id' => Yii::$app->user->id])
             ->andWhere(['status' => Status::STATUS_IN_PROGRESS])
             ->count();
+    }
+
+    public function getFileUrl()
+    {
+        $resourse = FileUploadAsset::register(Yii::$app->view);
+
+        //return $this->inputFilesDocum;
+        return [$resourse->baseUrl . '/'. $this->file];
     }
 }

@@ -63,7 +63,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'name',
         'comment:ntext',
         'link_lecture',
-        'file',
+        [
+            'attribute' => 'file',
+            'format' => 'raw',
+            'filter' => false,
+            'value' => function($model){
+                if ($model->file) {
+                    return Html::a($model->file, $model->getFileUrl(), [
+                        'download' => true,
+                        'data' => ['pjax' => '0']
+                    ]);
+                } else {
+                    return null;
+                }
+            },
+        ],
         [
             'attribute' => 'status',
             'filter' => Status::items(),
