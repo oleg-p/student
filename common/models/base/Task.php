@@ -58,6 +58,7 @@ class Task extends \yii\db\ActiveRecord
             'link_lecture' => Yii::t('app', 'Ссылка на лекцию'),
             'file' => Yii::t('app', 'Файл'),
             'status' => Yii::t('app', 'Состояние'),
+            'inputFilesDocum' => Yii::t('app', 'Документ PDF'),
         ];
     }
     

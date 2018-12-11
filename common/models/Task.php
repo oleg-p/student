@@ -35,6 +35,9 @@ class Task extends BaseTask
             [['link_lecture'], 'url', 'defaultScheme' => 'http'],
 
             [['name', 'link_lecture'], 'required', 'on' => self::SCENARIO_CREATE],
+
+            [['document', 'inputFilesDocum' , 'inputOriginFilesDocum'], 'safe', 'on' => self::SCENARIO_LINK_RESULT],
+            [['inputFilesDocum'], 'required', 'on' => self::SCENARIO_LINK_RESULT],
         ];
     }
 	
@@ -66,7 +69,22 @@ class Task extends BaseTask
         }
 
         return true;
+    }
 
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if($this->scenario === self::SCENARIO_LINK_RESULT){
+            //Прикрепление документа
+            $this->file = $this->inputFilesDocum;
+            //$this->file_original = $this->inputOriginFilesDocum;
+
+            $this->status = Status::STATUS_DONE;
+        }
+        return true;
     }
 
     /**

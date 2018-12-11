@@ -14,9 +14,6 @@ class PdfInput extends FileInput
     const PREFIX_NAME_FIELD = 'inputFiles';
     const PREFIX_ORIGIN_NAME_FIELD = 'inputOriginFiles';
 
-    /** Имя поля для хранения имени файла */
-    //public $fieldNameFile = 'fNameFile';
-
     public $nameTypeFile  = 'Docum';
 
     public $autoOrientImages = false; //https://github.com/kartik-v/bootstrap-fileinput/issues/1286
@@ -45,8 +42,9 @@ class PdfInput extends FileInput
 
         $this->pluginOptions['uploadUrl'] = $this->uploadUrl;
         $this->pluginOptions['deleteUrl'] = $this->deleteUrl;
+        $this->pluginOptions['allowedFileExtensions'] = ['pdf'];
         $this->pluginOptions['uploadExtraData'] = [
-            'nameImageField' => $this->model->formName(),
+            'nameImageField' => $this->model->formName() . '[document]',
         ];
 
         $this->pluginEvents['fileloaded'] = 'function(event, file, previewId, index, reader){'

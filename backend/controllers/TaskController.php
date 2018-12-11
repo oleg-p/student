@@ -10,6 +10,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\helpers\AppHelper;
+use yii\web\UploadedFile;
+use backend\models\UploadDocument;
+use yii\helpers\Json;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -30,7 +33,7 @@ class TaskController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'pdf', 'take'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'pdf', 'take', 'upload-document'],
                         'roles' => ['@']
                     ],
                     [
@@ -112,6 +115,30 @@ class TaskController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionUploadDocument()
+    {
+        $file = UploadedFile::getInstanceByName(Yii::$app->request->post('nameImageField'));
+
+        $model = new UploadDocument([]);
+        $prefixNameFile = 'document';
+
+        if($file !== null) {
+            $model->uploadedFile = $file;
+            $model->nameFile = $prefixNameFile . '_' . rand(1, 100000) . '.' . $file->getExtension();
+            if ($model->upload()) {
+                return Json::encode([
+                    'nameFile' => $model->nameFile,
+                    'originNameFile' => $file->name,
+                    'nameInputField' => $model->nameFile,
+                ]);
+            }
+        }
+
+        return Json::encode([
+            'error' => $model->getErrorUpload(),
+        ]);
     }
 
     /**
