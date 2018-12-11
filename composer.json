@@ -21,7 +21,8 @@
         "mootensai/yii2-enhanced-gii": "dev-master",
         "kartik-v/yii2-mpdf": "dev-master",
         "kartik-v/yii2-widget-fileinput": "dev-master",
-        "kartik-v/yii2-widget-datepicker": "dev-master"
+        "kartik-v/yii2-widget-datepicker": "dev-master",
+        "yiisoft/yii2-authclient": "~2.1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
