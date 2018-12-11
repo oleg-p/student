@@ -46,7 +46,7 @@ use yii\widgets\ActiveForm;
         'disabled' => true,
     ]) ?>
 
-    <?= $form->field($model, 'file')->textInput(['maxlength' => true, 'placeholder' => 'File']) ?>
+    <?php // $form->field($model, 'file')->textInput(['maxlength' => true, 'placeholder' => 'File']) ?>
 
     <div class="form-group">
         <div class="load-div-file load-document">
