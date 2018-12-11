@@ -83,6 +83,10 @@ class TaskController extends Controller
      */
     public function actionCreate()
     {
+        if(!AppHelper::isManager()){
+            $this->redirect(['/site/index']);
+        }
+
         $model = new Task();
         $model->scenario = Task::SCENARIO_CREATE;
 
@@ -104,6 +108,11 @@ class TaskController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(!AppHelper::isExecutor()){
+            $this->redirect(['/site/index']);
+        }
+
+
         $model = $this->findModel($id);
         $model->scenario = Task::SCENARIO_LINK_RESULT;
 
@@ -149,6 +158,10 @@ class TaskController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!AppHelper::isManager()){
+            $this->redirect(['/site/index']);
+        }
+
         $model = $this->findModel($id);
         if($model->status === Status::STATUS_NEW && AppHelper::isManager()){
             $model->delete();

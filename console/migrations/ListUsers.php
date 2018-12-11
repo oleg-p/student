@@ -9,7 +9,7 @@ namespace console\migrations;
 class ListUsers
 {
     const PREFIX_MANAGER  = 'manager';
-    const PREFIX_EXECUTOR = 'executer';
+    const PREFIX_EXECUTOR = 'executor';
 
     /**
      * Возвращает список менеджеров
