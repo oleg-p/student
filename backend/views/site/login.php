@@ -33,3 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<div>
+    <div class="row">
+        <h2>Авторизация через VK</h2>
+        <?= yii\authclient\widgets\AuthChoice::widget([
+            'baseAuthUrl' => ['site/auth'],
+            'popupMode' => false,
+        ]) ?>
+    </div>
+</div>
